@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    
+<meta charset="utf-8" >
+
+<title>使用C获取任意长度连续数据在内存中的原始二进制值 | enbug</title>
+<meta name="description" content="nothing">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://xx2211.github.io/favicon.ico?v=1692622271378">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://xx2211.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://xx2211.github.io">
+        <img class="avatar" src="https://xx2211.github.io/images/avatar.png?v=1692622271378" alt="" width="32px" height="32px">
+      </a>
+      <a href="https://xx2211.github.io">
+        <h1 class="site-title">enbug</h1>
+      </a>
+    </div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
+  </div>
+</div>
+
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
+      
+        
+          <a href="/" class="menu purple-link">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="menu purple-link">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="menu purple-link">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+</transition>
+
+
+      <div class="content-container">
+        <div class="post-detail">
+          
+          <h2 class="post-title">使用C获取任意长度连续数据在内存中的原始二进制值</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2019-09-29</span>
+            
+          </div>
+          <div class="post-content" v-pre>
+            <p>如下:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+//参数1：数据首地址
+//参数2：数据大小(字节数)
+//返回值: 空
+//输出: 内存数据
+void funPrintBit(void * pFirstAddress, int iByteNum)   //此函数仅使用于小端机器，即低位在前，高位在后
+{	
+	unsigned char *p = (unsigned char *)pFirstAddress; //对小端来讲，逻辑左移即物理右移
+	unsigned char c;								   //对小端来讲，逻辑右移即物理左移
+	for (int i = 0; i &lt; iByteNum; i++)
+	{
+		c = 1;
+		for (int j = 0; j &lt; 8; j++)
+		{
+			printf(&quot;%d&quot;, (p[i]&amp;c) &gt;&gt; j);
+			c = c &lt;&lt; 1;
+		}
+		printf(&quot; &quot;);
+	}
+	printf(&quot;\n&quot;);
+}
+
+int main(){
+    funPrintBit(&amp;main, 10);
+}
+
+
+</code></pre>
+
+          </div>
+        </div>
+
+        
+      </div>
+
+      
+
+      <div class="site-footer">
+  <div class="slogan">nothing</div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://xx2211.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+
+    </div>
+    <script type="application/javascript">
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

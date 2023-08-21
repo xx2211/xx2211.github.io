@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    
+<meta charset="utf-8" >
+
+<title>Windows构建 安装 使用ovs(Open vSwitch) | enbug</title>
+<meta name="description" content="nothing">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://xx2211.github.io/favicon.ico?v=1692622271378">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://xx2211.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://xx2211.github.io">
+        <img class="avatar" src="https://xx2211.github.io/images/avatar.png?v=1692622271378" alt="" width="32px" height="32px">
+      </a>
+      <a href="https://xx2211.github.io">
+        <h1 class="site-title">enbug</h1>
+      </a>
+    </div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
+  </div>
+</div>
+
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
+      
+        
+          <a href="/" class="menu purple-link">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="menu purple-link">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="menu purple-link">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+</transition>
+
+
+      <div class="content-container">
+        <div class="post-detail">
+          
+          <h2 class="post-title">Windows构建 安装 使用ovs(Open vSwitch)</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2022-07-19</span>
+            
+          </div>
+          <div class="post-content" v-pre>
+            <!-- more -->
+<!-- more -->
+<p>若不需要构建，只是直接拿来用，可以在此链接下载带签过名的驱动的安装包:  https://cloudbase.it/downloads/openvswitch-hyperv-2.7.0-certified.msi</p>
+<p>Windows上构建ovs会生成可执行程序和驱动，驱动其实是ovs对hyper-v交换机的扩展，Windows上ovs的运行依赖此扩展。</p>
+<p>ovs on windows除了驱动相关的部分，大部分代码直接用的是linux版本的，所以构建需要用到一些linux下的工具，为了方便调用这些工具，使用msys去模拟了一个linux环境。</p>
+<p>具体的说，就是windows系统中启动一个msys环境，msys 中跑autoconf、make等工具，这些工具可以很方便地访问到windows系统或者msys模拟环境中的一些编译链接等工具。</p>
+<p>具体的构建以及使用步骤如下：</p>
+<h1 id="download-all-of-what-need-to-download">Download all of what need to download</h1>
+<p>所有下载链接和对应的保存位置：</p>
+<pre><code>https://aka.ms/vs/16/release/vs_buildtools.exe      C:\TEMP\vs_buildtools.exe
+https://go.microsoft.com/fwlink/?linkid=2085767     C:\TEMP\wdksetup.exe
+
+https://chocolatey.org/install.ps1                  C:\TEMP\choco-install.ps1
+
+https://nchc.dl.sourceforge.net/project/pthreads4w/pthreads4w-code-v3.0.0.zip    C:\TEMP\pthreads4w-code.zip
+
+https://www.openvswitch.org/releases/openvswitch-3.1.2.tar.gz                    C:\TEMP\openvswitch-3.1.2.tar.gz
+</code></pre>
+<p>下载命令</p>
+<pre><code class="language-cmd">powershell Invoke-WebRequest 下载链接 -OutFile 保存的位置
+</code></pre>
+<h1 id="install-choco">Install choco</h1>
+<p>Note：可能需要先执行<code>Set-ExecutionPolicy RemoteSigned</code> 设置权限以允许powershell执行脚本。</p>
+<pre><code># For process of install of choco, it below will be downloaded automatically
+# Downloading https://community.chocolatey.org/api/v2/package/chocolatey/2.1.0 to C:\Users\ContainerAdministrator\AppData\Local\Temp\chocolatey\chocoInstall\chocolatey.zip
+# This download above is slow, so local file instead of it.
+</code></pre>
+<p>使用本地包安装choco：可以先下载chocolatey.2.1.0.nupkg，然后把扩展名改为zip，然后执行如下命令安装choco</p>
+<pre><code>copy C:\TEMP\chocolatey.2.1.0.nupkg C:\TEMP\chocolatey.2.1.0.zip
+powershell C:\TEMP\choco-install.ps1 -ChocolateyDownloadUrl C:\TEMP\chocolatey.2.1.0.zip
+</code></pre>
+<p>或者直接通过网络安装choco(可能很慢)：执行如下命令</p>
+<pre><code>powershell C:\TEMP\choco-install.ps1
+</code></pre>
+<h1 id="install-tools-by-choco-include-msys2-python3-7z-and-wixtoolset">Install tools by choco include msys2, python3, 7z and wixtoolset</h1>
+<pre><code># To improve speed used local package instead of network source.
+# COPY packagename.nupkg C:/TEMP/choco/
+</code></pre>
+<p>执行如下命令安装，若没有本地包，去掉--source参数，使用默认的网络仓库安装即可。</p>
+<pre><code>choco install --source=C:/TEMP/ msys2 --params &quot;/NoUpdate /InstallDir:C:/msys2&quot; -y
+choco install --source=C:/TEMP/ python311 -y
+choco install --source=C:/TEMP/ 7zip.install -y
+choco install --source=C:/TEMP/ wixtoolset -y
+</code></pre>
+<h1 id="install-msbuilds-sdk-wdk-and-other-ms-tools">Install MSBuilds, SDK, WDK and other MS tools.</h1>
+<p>执行如下命令</p>
+<p>Note: 下列命令需要在powershell中执行</p>
+<pre><code>C:\TEMP\vs_buildtools.exe --wait --norestart --nocache `
+    --installPath C:\BuildTools `
+    --add Microsoft.VisualStudio.Workload.VCTools `
+    --add Microsoft.VisualStudio.Workload.MSBuildTools `
+    --add Microsoft.VisualStudio.Component.VC.Runtimes.x86.x64.Spectre `
+    --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
+    --add Microsoft.VisualStudio.Component.Windows10SDK.18362 `
+    --add Microsoft.VisualStudio.Component.VC.14.24.x86.x64 `
+    --add Microsoft.VisualStudio.Component.VC.14.24.x86.x64.Spectre
+</code></pre>
+<h1 id="install-wdk">Install wdk</h1>
+<p>执行如下命令</p>
+<pre><code>C:\TEMP\wdksetup.exe /q
+copy &quot;C:\Program Files (x86)\Windows Kits\10\Vsix\VS2019\WDK.vsix&quot; C:\TEMP\wdkvsix.zip
+7z x C:\TEMP\wdkvsix.zip -OC:\TEMP\wdkvsix
+robocopy.exe /e &quot;C:/temp/wdkvsix/$MSBuild/Microsoft/VC/v160&quot; &quot;C:/BuildTools/MSBuild/Microsoft/VC/v160&quot;
+</code></pre>
+<h1 id="install-vc-runtime-redist">Install VC runtime Redist</h1>
+<p>下载 vc2015,链接：</p>
+<pre><code>ed2k://|file|cn_visual_studio_community_2015_with_update_3_x86_x64_dvd_8923246.iso|7633565696|605D19028916D09E1BFA2DABBD266FE9|/
+</code></pre>
+<p>安装vs2015，必须且只需选 <code>编程语言/Visual C++/适用于Visual C++2015的公共工具</code>，其他组件都不用选</p>
+<h1 id="add-wixtoolset-to-msbuild">Add WixToolSet to MSBuild</h1>
+<p>执行如下命令：</p>
+<pre><code>msys2_shell.cmd -defterm -no-start -use-full-path -c &quot;cp -rf '/c/Program Files (x86)/MSBuild/Microsoft/WiX/' /c/BuildTools/MSBuild/Microsoft/WiX/&quot;
+</code></pre>
+<h1 id="install-pthreads4w">Install pthreads4w</h1>
+<p>执行如下命令</p>
+<p>Note: 下列命令需要在powershell中执行</p>
+<pre><code>7z x C:/TEMP/pthreads4w-code.zip -OC:\TEMP\pthreads4w
+cd C:\TEMP\pthreads4w\pthreads4w-code-07053a521b0a9deb6db2a649cde1f828f2eb1f4f `
+    &amp;&amp; c:\BuildTools\VC\\Auxiliary\\Build\\vcvarsall.bat  x64  10.0.18362.0 `
+    &amp;&amp; nmake realclean VC
+mkdir C:\pthread\include\
+copy C:\TEMP\pthreads4w\pthreads4w-code-07053a521b0a9deb6db2a649cde1f828f2eb1f4f\*.h C:\pthread\include\*.h
+mkdir C:\pthread\bin\
+copy C:\TEMP\pthreads4w\pthreads4w-code-07053a521b0a9deb6db2a649cde1f828f2eb1f4f\*.dll C:\pthread\bin\*.dll
+copy C:\TEMP\pthreads4w\pthreads4w-code-07053a521b0a9deb6db2a649cde1f828f2eb1f4f\*.lib C:\pthread\bin\*.lib
+mkdir C:\pthread\lib\
+copy C:\TEMP\pthreads4w\pthreads4w-code-07053a521b0a9deb6db2a649cde1f828f2eb1f4f\*.lib C:\pthread\lib\*.lib
+</code></pre>
+<h1 id="config-msys2-and-python-to-suport-configure-script-of-ovs">Config msys2 and python to suport configure script of ovs</h1>
+<p>执行如下命令：</p>
+<pre><code>msys2_shell.cmd -defterm -no-start -use-full-path -c &quot;pacman --noconfirm -S automake autoconf libtool make patch&quot;
+msys2_shell.cmd -defterm -no-start -use-full-path -c &quot;mv /usr/bin/link /usr/bin/link_bkup&quot;
+msys2_shell.cmd -defterm -no-start -use-full-path -c &quot;cp `which python` `which python`3&quot;
+</code></pre>
+<h1 id="install-pypiwin32">Install pypiwin32</h1>
+<p>执行如下命令</p>
+<pre><code>pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+python3 -m pip install pypiwin32 --disable-pip-version-check
+</code></pre>
+<h1 id="decompressing-ovs-source">Decompressing ovs source</h1>
+<p>执行如下命令</p>
+<pre><code>7z x C:\TEMP\openvswitch-3.1.2.tar.gz -OC:\TEMP\
+7z x C:\TEMP\openvswitch-3.1.2.tar -OC:\TEMP\
+# After above operations, top dir of source of ovs is in:
+# win: C:\TEMP\openvswitch-3.1.2, or msys2: /c/TEMP/openvswitch-3.1.2/
+</code></pre>
+<h1 id="build-installer">Build installer</h1>
+<p>执行如下命令</p>
+<p>Note: 下列命令需要在powershell中执行</p>
+<pre><code>c:\BuildTools\VC\Auxiliary\Build\vcvarsall.bat x64 10.0.18362.0 `
+    &amp;&amp; msys2_shell.cmd -defterm -no-start -msys2 -use-full-path -c `
+    &quot;cd /c/TEMP/openvswitch-3.1.2/ &amp;&amp; ./boot.sh&quot; 
+    
+c:\BuildTools\VC\Auxiliary\Build\vcvarsall.bat x64 10.0.18362.0 `
+    &amp;&amp; msys2_shell.cmd -defterm -no-start -msys2 -use-full-path -c `
+    &quot;cd /c/TEMP/openvswitch-3.1.2/ &amp;&amp; ./configure CC=./build-aux/cccl LD='`which link`' LIBS='-lws2_32 -lShlwapi -liphlpapi -lwbemuuid -lole32 -loleaut32' --prefix='C:/openvswitch/usr' --localstatedir='C:/openvswitch/var' --sysconfdir='C:/openvswitch/etc' --with-pthread='C:/pthread' --with-vstudiotarget='Release' --with-vstudiotargetver='Win10' &quot; 
+    
+c:\BuildTools\VC\Auxiliary\Build\vcvarsall.bat x64 10.0.18362.0 `
+    &amp;&amp; msys2_shell.cmd -defterm -no-start -msys2 -use-full-path -c `
+    &quot;cd /c/TEMP/openvswitch-3.1.2/ &amp;&amp; make -j8 &quot;
+
+# 为构建安装包准备目录及文件
+cd C:\TEMP\openvswitch-3.1.2\windows\ovs-windows-installer `
+    &amp;&amp; mkdir Services Binaries Symbols Redist Driver Driver\Win8 Driver\Win8.1 Driver\Win10 `
+    &amp;&amp; msys2_shell.cmd -defterm -no-start -use-full-path -c &quot;cd /c/TEMP/openvswitch-3.1.2/ &amp;&amp; cp -rf  ./datapath-windows/x64/Win10Release/ ./datapath-windows/x64/Win8Release/&quot; `
+    &amp;&amp; msys2_shell.cmd -defterm -no-start -use-full-path -c &quot;cd /c/TEMP/openvswitch-3.1.2/ &amp;&amp; cp -rf  ./datapath-windows/x64/Win10Release/ ./datapath-windows/x64/Win8.1Release/&quot;
+
+c:\BuildTools\VC\Auxiliary\Build\vcvarsall.bat x64 10.0.18362.0 `
+    &amp;&amp; msys2_shell.cmd -defterm -no-start -msys2 -use-full-path -c `
+    &quot;cd /c/TEMP/openvswitch-3.1.2/ &amp;&amp; make windows_installer&quot;
+
+mkdir C:\TEMP\installer\driver
+copy C:\TEMP\openvswitch-3.1.2\windows\ovs-windows-installer\bin\x64\Release\OpenvSwitch.msi C:\TEMP\installer\OpenvSwitch.msi
+cd C:\TEMP\openvswitch-3.1.2\datapath-windows `
+    &amp;&amp; copy x64\Win10Release\package\ovsext.inf c:\TEMP\installer\driver `
+    &amp;&amp; copy x64\Win10Release\package\OVSExt.sys c:\TEMP\installer\driver `
+    &amp;&amp; copy x64\Win10Release\package\ovsext.cat c:\TEMP\installer\driver `
+    &amp;&amp; copy misc\*.cmd c:\TEMP\installer\driver
+
+7z a -tzip C:\TEMP\installer.zip C:\TEMP\installer\
+
+</code></pre>
+<h1 id="安装驱动">安装驱动</h1>
+<p>解压 D:\installer.zip</p>
+<p>然后执行下面命令（在cmd或powershell中均可，需要管理员权限）</p>
+<pre><code class="language-cmd">cd D:\installer\installer\driver
+uninstall.cmd
+install.cmd
+</code></pre>
+<p>note: 可能需要禁用驱动程序强制签名或者开启测试模式才能安装驱动</p>
+<h1 id="安装ovs扩展到hyperv">安装ovs扩展到hyperv</h1>
+<p>执行下列命令。需要再有管理员权限的powershell中执行。<br>
+note：在执行命令前，你需要先把一个物理网卡改成英文名，下面的例子是 &quot;phy_netcard&quot;<br>
+此网卡需要在网卡芯片官网下载最新驱动安装(不要用windows自带的驱动), 然后在硬件属性中开启<code>数据包优先级和VLAN</code>, 以允许带vlan tag的包通过此网卡，以支持vlan透传。</p>
+<pre><code class="language-ps"># 以太网是你要使用的物理网卡的名字
+New-VMSwitch &quot;OVS-Extended-Switch&quot; -NetAdapterName &quot;phy_netcard&quot;
+Enable-VMSwitchExtension &quot;Open vSwitch Extension&quot; OVS-Extended-Switch
+</code></pre>
+<h1 id="安装ovs本体">安装ovs本体</h1>
+<p>双击 D:\installer\installer\OpenvSwitch.msi 执行即可</p>
+<h1 id="测试ovs">测试ovs</h1>
+<pre><code>ovs-vsctl add-br br01 # 创建虚拟交换机br01
+ovs-vsctl add-port br01 pyh_netcard # 绑定物理网卡pyh_netcard为虚拟交换机br01的端口
+ovs-vsctl add-port br01 vir_interface -- set interface vir_interface type=internal # 在虚拟交换机br01上创建一个虚拟端口vir_interface，在宿主操作系统中创建一块虚拟网卡vir_interface，并把这个端口和网卡连接起来
+ovs-vsctl set port vir_interface tag=10 # 设置端口为access模式，并设置tag
+ovs-vsctl set port phy_netcard trunks=[10,20] 3 # 设置端口为trunk模式，并设置tag
+</code></pre>
+
+          </div>
+        </div>
+
+        
+          <div class="next-post">
+            <a class="purple-link" href="https://xx2211.github.io/post/shi-yong-c-huo-qu-ren-yi-chang-du-lian-xu-shu-ju-zai-nei-cun-zhong-de-yuan-shi-er-jin-zhi-zhi/">
+              <h3 class="post-title">
+                下一篇：使用C获取任意长度连续数据在内存中的原始二进制值
+              </h3>
+            </a>
+          </div>
+          
+      </div>
+
+      
+
+      <div class="site-footer">
+  <div class="slogan">nothing</div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://xx2211.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+
+    </div>
+    <script type="application/javascript">
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

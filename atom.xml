@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://xx2211.github.io</id>
+    <title>enbug</title>
+    <updated>2023-08-21T12:51:21.618Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://xx2211.github.io"/>
+    <link rel="self" href="https://xx2211.github.io/atom.xml"/>
+    <subtitle>nothing</subtitle>
+    <logo>https://xx2211.github.io/images/avatar.png</logo>
+    <icon>https://xx2211.github.io/favicon.ico</icon>
+    <rights>All rights reserved 2023, enbug</rights>
+    <entry>
+        <title type="html"><![CDATA[VMWare中虚拟机挂载设备时常见问题及解决方案]]></title>
+        <id>https://xx2211.github.io/post/vmware-zhong-xu-ni-ji-gua-zai-she-bei-shi-chang-jian-wen-ti-ji-jie-jue-fang-an/</id>
+        <link href="https://xx2211.github.io/post/vmware-zhong-xu-ni-ji-gua-zai-she-bei-shi-chang-jian-wen-ti-ji-jie-jue-fang-an/">
+        </link>
+        <updated>2023-06-24T17:35:18.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="问题01-连接与xx断开连接按钮为灰色">问题01   <code>连接(与xx断开连接)</code>按钮为灰色</h3>
+<p>解决方案：<br>
+先关闭虚拟机，然后打开虚拟机所在目录，打开 &lt;虚拟机名&gt;.vmx文件，找到<code>usb .restrictions.default Allow= &quot;FALSE&quot;</code>这一行，并把FALSE改为TRUE，然后重新打开虚拟机即可。</p>
+<p>切记要先关闭虚拟机，再修改文件。</p>
+<h3 id="问题02-连接了设备但是虚拟机中不显示">问题02 连接了设备但是虚拟机中不显示</h3>
+<p>解决方案：<br>
+在虚拟机硬件中添加usb设备，并且版本要与实际硬件的版本一致，保险起见，可以把每个版本(usb2.0、usb3.0等)的设备都创建一个添加到虚拟机。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Qt总结]]></title>
+        <id>https://xx2211.github.io/post/qt-zong-jie/</id>
+        <link href="https://xx2211.github.io/post/qt-zong-jie/">
+        </link>
+        <updated>2022-07-22T14:14:54.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="安装器维护器">安装器&amp;维护器</h4>
+<ul>
+<li>
+<p>在线安装器</p>
+<ul>
+<li>
+<p>在qt官网下载</p>
+</li>
+<li>
+<p>选择组件，注意选择qt的版本和编译器的版本，以及ide(qt creator)。</p>
+</li>
+<li>
+<p>lts版本较稳定。社区版的lts版本有6.2.4，5.15.2</p>
+</li>
+</ul>
+</li>
+<li>
+<p>维护器</p>
+<ul>
+<li>
+<p>位置在qt的安装目录</p>
+</li>
+<li>
+<p>用来增删改组件</p>
+</li>
+</ul>
+</li>
+<li>
+<p>附注: 使用国内镜像源加速</p>
+<ul>
+<li>用命令行启动在线安装器或维护工具，并加上命令行参数--mirror https://mirror.nju.edu.cn/qt</li>
+</ul>
+</li>
+</ul>
+<h4 id="示例教程">示例&amp;教程</h4>
+<ul>
+<li>在qt creator的欢迎界面</li>
+</ul>
+<h4 id="构建系统">构建系统</h4>
+<ul>
+<li>qmake/cmake</li>
+<li>要使用某个模块，要先在cmake/qmake中添加</li>
+<li>把 头文件/源文件/资源文件/界面文件 添加到项目中</li>
+</ul>
+<h4 id="编译套件">编译套件</h4>
+<ul>
+<li>mingw：移植的gcc，可以用于windows桌面开发</li>
+<li>其他：桌面、嵌入式、移动端等等，应该暂时用不到</li>
+</ul>
+<h4 id="qt命令行环境">Qt命令行环境</h4>
+<ul>
+<li>
+<p>功能：打包、测试、预览图形界面等</p>
+</li>
+<li>
+<p>位置：开始菜单-&gt;所有应用-&gt;Qt-&gt; Qt x.x.xx(xx.xx.xx)</p>
+</li>
+</ul>
+<h4 id="半自动的内存管理">半自动的内存管理</h4>
+<ul>
+<li>
+<p>继承自QObject/QWidget的对象。可以设置父对象。所有对象可以组成一个或若干个对象树。根对象被回收时它的子孙对象会自动被回收。</p>
+</li>
+<li>
+<p>附：c++的其他内存管理方式：raii等。</p>
+</li>
+</ul>
+<h4 id="信号槽机制">信号槽机制</h4>
+<ul>
+<li>
+<p>观察者模式</p>
+</li>
+<li>
+<p>是QObject的子孙且包含Q_OBJECT宏的类，可以声明信号或槽</p>
+</li>
+<li>
+<p>信号：用singls宏声明，只用声明不用实现</p>
+</li>
+<li>
+<p>槽：用slots宏声明，需要实现</p>
+</li>
+<li>
+<p>示例伪代码</p>
+</li>
+</ul>
+<pre><code class="language-c++">
+  //对象1发出信号1时，对象2的信号2/槽2会被触发
+  QObject::connect( 对象1, 信号1, 对象2, 信号2/槽2 )
+​	
+  //对象1发出信号1时，lambda表达式会被触发
+  QObject::connect( 对象1, 信号1,  lambda表达式 )
+    
+  //手动发射信号
+  emit 对象.信号名()
+</code></pre>
+<h4 id="gui图形界面开发">GUI图形界面开发</h4>
+<ul>
+<li>
+<p>界面开发方式</p>
+<ul>
+<li>
+<p>widgets-based</p>
+<ul>
+<li>直接new控件</li>
+<li>ui文件</li>
+</ul>
+</li>
+<li>
+<p>qt quick</p>
+<ul>
+<li>
+<p>程序执行时用js引擎解析qml文件，边执行边解析渲染</p>
+</li>
+<li>
+<p>图片要先加到 cmake</p>
+</li>
+<li>
+<p>事件处理</p>
+<ul>
+<li>connect、on信号名首字母大写</li>
+</ul>
+</li>
+<li>
+<p>组件</p>
+<ul>
+<li>
+<p>参考书籍：qt quick 核心编程 第7章</p>
+</li>
+<li>
+<p>qml 组件参考： https://blog.csdn.net/kenfan1647/article/details/120546294</p>
+</li>
+<li>
+<p>qml 自定义控件参考 https://blog.csdn.net/u013718730/article/details/104160498</p>
+</li>
+<li>
+<p>qml 自定义类型参考： https://blog.csdn.net/beibeix2015/article/details/111991060</p>
+</li>
+</ul>
+</li>
+<li>
+<p>qml与c++交互</p>
+<ul>
+<li>此文写的很细致适合入门：https://blog.csdn.net/xiezhongyuan07/article/details/109245920</li>
+<li>此文总结的很全面：https://blog.csdn.net/xiezhongyuan07/article/details/109318209</li>
+<li>这是demo：https://gitee.com/xx2211/projects</li>
+<li>这是进阶demo
+<ul>
+<li>cpp中使用qml https://blog.csdn.net/bureau123/article/details/124454536</li>
+<li>qml中使用cpp https://blog.csdn.net/bureau123/article/details/124378214</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>窗口坐标系</p>
+<ul>
+<li>左上为原点，向右为x正方向，向下为y正方向</li>
+</ul>
+</li>
+<li>
+<p>view &amp; model</p>
+<ul>
+<li>view显示数据的容器 model存储数据 delegate定义显示方式</li>
+</ul>
+</li>
+<li>
+<p>自定义控件(widget)</p>
+<ul>
+<li>继承Qt控件，修改外观、布局、添加子控件等。</li>
+<li>ui设计器中使用自定义控件，先使用基本控件，再“提升为”自定义控件</li>
+</ul>
+</li>
+<li>
+<p>dpi, pointSize, pixeSize</p>
+<ul>
+<li>pointSize自适应，pixelSize像素单位</li>
+</ul>
+</li>
+</ul>
+<h4 id="打包">打包</h4>
+<ul>
+<li>windeployqt命令，有时需要手动替换依赖</li>
+<li>打包成一个文件：enigma virtual box工具</li>
+<li>验证打包是否成功：在sandbox中尝试运行</li>
+</ul>
+<h4 id="帮助文档">帮助文档</h4>
+<ul>
+<li>本地帮助文档：工具栏-&gt;帮助-&gt;索引</li>
+<li>官方在线文档 https://doc.qt.io/   https://doc.qt.io/all-topics.html</li>
+<li>第三方博客 qml https://blog.csdn.net/bureau123/category_11712436.html</li>
+<li>第三方博客 qt https://blog.csdn.net/bureau123/category_10691949.html</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Windows构建 安装 使用ovs(Open vSwitch)]]></title>
+        <id>https://xx2211.github.io/post/windows-gou-jian-an-zhuang-shi-yong-ovsopen-vswitch/</id>
+        <link href="https://xx2211.github.io/post/windows-gou-jian-an-zhuang-shi-yong-ovsopen-vswitch/">
+        </link>
+        <updated>2022-07-18T17:59:35.000Z</updated>
+        <content type="html"><![CDATA[<!-- more -->
+<!-- more -->
+<p>若不需要构建，只是直接拿来用，可以在此链接下载带签过名的驱动的安装包:  https://cloudbase.it/downloads/openvswitch-hyperv-2.7.0-certified.msi</p>
+<p>Windows上构建ovs会生成可执行程序和驱动，驱动其实是ovs对hyper-v交换机的扩展，Windows上ovs的运行依赖此扩展。</p>
+<p>ovs on windows除了驱动相关的部分，大部分代码直接用的是linux版本的，所以构建需要用到一些linux下的工具，为了方便调用这些工具，使用msys去模拟了一个linux环境。</p>
+<p>具体的说，就是windows系统中启动一个msys环境，msys 中跑autoconf、make等工具，这些工具可以很方便地访问到windows系统或者msys模拟环境中的一些编译链接等工具。</p>
+<p>具体的构建以及使用步骤如下：</p>
+<h1 id="download-all-of-what-need-to-download">Download all of what need to download</h1>
+<p>所有下载链接和对应的保存位置：</p>
+<pre><code>https://aka.ms/vs/16/release/vs_buildtools.exe      C:\TEMP\vs_buildtools.exe
+https://go.microsoft.com/fwlink/?linkid=2085767     C:\TEMP\wdksetup.exe
+
+https://chocolatey.org/install.ps1                  C:\TEMP\choco-install.ps1
+
+https://nchc.dl.sourceforge.net/project/pthreads4w/pthreads4w-code-v3.0.0.zip    C:\TEMP\pthreads4w-code.zip
+
+https://www.openvswitch.org/releases/openvswitch-3.1.2.tar.gz                    C:\TEMP\openvswitch-3.1.2.tar.gz
+</code></pre>
+<p>下载命令</p>
+<pre><code class="language-cmd">powershell Invoke-WebRequest 下载链接 -OutFile 保存的位置
+</code></pre>
+<h1 id="install-choco">Install choco</h1>
+<p>Note：可能需要先执行<code>Set-ExecutionPolicy RemoteSigned</code> 设置权限以允许powershell执行脚本。</p>
+<pre><code># For process of install of choco, it below will be downloaded automatically
+# Downloading https://community.chocolatey.org/api/v2/package/chocolatey/2.1.0 to C:\Users\ContainerAdministrator\AppData\Local\Temp\chocolatey\chocoInstall\chocolatey.zip
+# This download above is slow, so local file instead of it.
+</code></pre>
+<p>使用本地包安装choco：可以先下载chocolatey.2.1.0.nupkg，然后把扩展名改为zip，然后执行如下命令安装choco</p>
+<pre><code>copy C:\TEMP\chocolatey.2.1.0.nupkg C:\TEMP\chocolatey.2.1.0.zip
+powershell C:\TEMP\choco-install.ps1 -ChocolateyDownloadUrl C:\TEMP\chocolatey.2.1.0.zip
+</code></pre>
+<p>或者直接通过网络安装choco(可能很慢)：执行如下命令</p>
+<pre><code>powershell C:\TEMP\choco-install.ps1
+</code></pre>
+<h1 id="install-tools-by-choco-include-msys2-python3-7z-and-wixtoolset">Install tools by choco include msys2, python3, 7z and wixtoolset</h1>
+<pre><code># To improve speed used local package instead of network source.
+# COPY packagename.nupkg C:/TEMP/choco/
+</code></pre>
+<p>执行如下命令安装，若没有本地包，去掉--source参数，使用默认的网络仓库安装即可。</p>
+<pre><code>choco install --source=C:/TEMP/ msys2 --params &quot;/NoUpdate /InstallDir:C:/msys2&quot; -y
+choco install --source=C:/TEMP/ python311 -y
+choco install --source=C:/TEMP/ 7zip.install -y
+choco install --source=C:/TEMP/ wixtoolset -y
+</code></pre>
+<h1 id="install-msbuilds-sdk-wdk-and-other-ms-tools">Install MSBuilds, SDK, WDK and other MS tools.</h1>
+<p>执行如下命令</p>
+<p>Note: 下列命令需要在powershell中执行</p>
+<pre><code>C:\TEMP\vs_buildtools.exe --wait --norestart --nocache `
+    --installPath C:\BuildTools `
+    --add Microsoft.VisualStudio.Workload.VCTools `
+    --add Microsoft.VisualStudio.Workload.MSBuildTools `
+    --add Microsoft.VisualStudio.Component.VC.Runtimes.x86.x64.Spectre `
+    --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
+    --add Microsoft.VisualStudio.Component.Windows10SDK.18362 `
+    --add Microsoft.VisualStudio.Component.VC.14.24.x86.x64 `
+    --add Microsoft.VisualStudio.Component.VC.14.24.x86.x64.Spectre
+</code></pre>
+<h1 id="install-wdk">Install wdk</h1>
+<p>执行如下命令</p>
+<pre><code>C:\TEMP\wdksetup.exe /q
+copy &quot;C:\Program Files (x86)\Windows Kits\10\Vsix\VS2019\WDK.vsix&quot; C:\TEMP\wdkvsix.zip
+7z x C:\TEMP\wdkvsix.zip -OC:\TEMP\wdkvsix
+robocopy.exe /e &quot;C:/temp/wdkvsix/$MSBuild/Microsoft/VC/v160&quot; &quot;C:/BuildTools/MSBuild/Microsoft/VC/v160&quot;
+</code></pre>
+<h1 id="install-vc-runtime-redist">Install VC runtime Redist</h1>
+<p>下载 vc2015,链接：</p>
+<pre><code>ed2k://|file|cn_visual_studio_community_2015_with_update_3_x86_x64_dvd_8923246.iso|7633565696|605D19028916D09E1BFA2DABBD266FE9|/
+</code></pre>
+<p>安装vs2015，必须且只需选 <code>编程语言/Visual C++/适用于Visual C++2015的公共工具</code>，其他组件都不用选</p>
+<h1 id="add-wixtoolset-to-msbuild">Add WixToolSet to MSBuild</h1>
+<p>执行如下命令：</p>
+<pre><code>msys2_shell.cmd -defterm -no-start -use-full-path -c &quot;cp -rf '/c/Program Files (x86)/MSBuild/Microsoft/WiX/' /c/BuildTools/MSBuild/Microsoft/WiX/&quot;
+</code></pre>
+<h1 id="install-pthreads4w">Install pthreads4w</h1>
+<p>执行如下命令</p>
+<p>Note: 下列命令需要在powershell中执行</p>
+<pre><code>7z x C:/TEMP/pthreads4w-code.zip -OC:\TEMP\pthreads4w
+cd C:\TEMP\pthreads4w\pthreads4w-code-07053a521b0a9deb6db2a649cde1f828f2eb1f4f `
+    &amp;&amp; c:\BuildTools\VC\\Auxiliary\\Build\\vcvarsall.bat  x64  10.0.18362.0 `
+    &amp;&amp; nmake realclean VC
+mkdir C:\pthread\include\
+copy C:\TEMP\pthreads4w\pthreads4w-code-07053a521b0a9deb6db2a649cde1f828f2eb1f4f\*.h C:\pthread\include\*.h
+mkdir C:\pthread\bin\
+copy C:\TEMP\pthreads4w\pthreads4w-code-07053a521b0a9deb6db2a649cde1f828f2eb1f4f\*.dll C:\pthread\bin\*.dll
+copy C:\TEMP\pthreads4w\pthreads4w-code-07053a521b0a9deb6db2a649cde1f828f2eb1f4f\*.lib C:\pthread\bin\*.lib
+mkdir C:\pthread\lib\
+copy C:\TEMP\pthreads4w\pthreads4w-code-07053a521b0a9deb6db2a649cde1f828f2eb1f4f\*.lib C:\pthread\lib\*.lib
+</code></pre>
+<h1 id="config-msys2-and-python-to-suport-configure-script-of-ovs">Config msys2 and python to suport configure script of ovs</h1>
+<p>执行如下命令：</p>
+<pre><code>msys2_shell.cmd -defterm -no-start -use-full-path -c &quot;pacman --noconfirm -S automake autoconf libtool make patch&quot;
+msys2_shell.cmd -defterm -no-start -use-full-path -c &quot;mv /usr/bin/link /usr/bin/link_bkup&quot;
+msys2_shell.cmd -defterm -no-start -use-full-path -c &quot;cp `which python` `which python`3&quot;
+</code></pre>
+<h1 id="install-pypiwin32">Install pypiwin32</h1>
+<p>执行如下命令</p>
+<pre><code>pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+python3 -m pip install pypiwin32 --disable-pip-version-check
+</code></pre>
+<h1 id="decompressing-ovs-source">Decompressing ovs source</h1>
+<p>执行如下命令</p>
+<pre><code>7z x C:\TEMP\openvswitch-3.1.2.tar.gz -OC:\TEMP\
+7z x C:\TEMP\openvswitch-3.1.2.tar -OC:\TEMP\
+# After above operations, top dir of source of ovs is in:
+# win: C:\TEMP\openvswitch-3.1.2, or msys2: /c/TEMP/openvswitch-3.1.2/
+</code></pre>
+<h1 id="build-installer">Build installer</h1>
+<p>执行如下命令</p>
+<p>Note: 下列命令需要在powershell中执行</p>
+<pre><code>c:\BuildTools\VC\Auxiliary\Build\vcvarsall.bat x64 10.0.18362.0 `
+    &amp;&amp; msys2_shell.cmd -defterm -no-start -msys2 -use-full-path -c `
+    &quot;cd /c/TEMP/openvswitch-3.1.2/ &amp;&amp; ./boot.sh&quot; 
+    
+c:\BuildTools\VC\Auxiliary\Build\vcvarsall.bat x64 10.0.18362.0 `
+    &amp;&amp; msys2_shell.cmd -defterm -no-start -msys2 -use-full-path -c `
+    &quot;cd /c/TEMP/openvswitch-3.1.2/ &amp;&amp; ./configure CC=./build-aux/cccl LD='`which link`' LIBS='-lws2_32 -lShlwapi -liphlpapi -lwbemuuid -lole32 -loleaut32' --prefix='C:/openvswitch/usr' --localstatedir='C:/openvswitch/var' --sysconfdir='C:/openvswitch/etc' --with-pthread='C:/pthread' --with-vstudiotarget='Release' --with-vstudiotargetver='Win10' &quot; 
+    
+c:\BuildTools\VC\Auxiliary\Build\vcvarsall.bat x64 10.0.18362.0 `
+    &amp;&amp; msys2_shell.cmd -defterm -no-start -msys2 -use-full-path -c `
+    &quot;cd /c/TEMP/openvswitch-3.1.2/ &amp;&amp; make -j8 &quot;
+
+# 为构建安装包准备目录及文件
+cd C:\TEMP\openvswitch-3.1.2\windows\ovs-windows-installer `
+    &amp;&amp; mkdir Services Binaries Symbols Redist Driver Driver\Win8 Driver\Win8.1 Driver\Win10 `
+    &amp;&amp; msys2_shell.cmd -defterm -no-start -use-full-path -c &quot;cd /c/TEMP/openvswitch-3.1.2/ &amp;&amp; cp -rf  ./datapath-windows/x64/Win10Release/ ./datapath-windows/x64/Win8Release/&quot; `
+    &amp;&amp; msys2_shell.cmd -defterm -no-start -use-full-path -c &quot;cd /c/TEMP/openvswitch-3.1.2/ &amp;&amp; cp -rf  ./datapath-windows/x64/Win10Release/ ./datapath-windows/x64/Win8.1Release/&quot;
+
+c:\BuildTools\VC\Auxiliary\Build\vcvarsall.bat x64 10.0.18362.0 `
+    &amp;&amp; msys2_shell.cmd -defterm -no-start -msys2 -use-full-path -c `
+    &quot;cd /c/TEMP/openvswitch-3.1.2/ &amp;&amp; make windows_installer&quot;
+
+mkdir C:\TEMP\installer\driver
+copy C:\TEMP\openvswitch-3.1.2\windows\ovs-windows-installer\bin\x64\Release\OpenvSwitch.msi C:\TEMP\installer\OpenvSwitch.msi
+cd C:\TEMP\openvswitch-3.1.2\datapath-windows `
+    &amp;&amp; copy x64\Win10Release\package\ovsext.inf c:\TEMP\installer\driver `
+    &amp;&amp; copy x64\Win10Release\package\OVSExt.sys c:\TEMP\installer\driver `
+    &amp;&amp; copy x64\Win10Release\package\ovsext.cat c:\TEMP\installer\driver `
+    &amp;&amp; copy misc\*.cmd c:\TEMP\installer\driver
+
+7z a -tzip C:\TEMP\installer.zip C:\TEMP\installer\
+
+</code></pre>
+<h1 id="安装驱动">安装驱动</h1>
+<p>解压 D:\installer.zip</p>
+<p>然后执行下面命令（在cmd或powershell中均可，需要管理员权限）</p>
+<pre><code class="language-cmd">cd D:\installer\installer\driver
+uninstall.cmd
+install.cmd
+</code></pre>
+<p>note: 可能需要禁用驱动程序强制签名或者开启测试模式才能安装驱动</p>
+<h1 id="安装ovs扩展到hyperv">安装ovs扩展到hyperv</h1>
+<p>执行下列命令。需要再有管理员权限的powershell中执行。<br>
+note：在执行命令前，你需要先把一个物理网卡改成英文名，下面的例子是 &quot;phy_netcard&quot;<br>
+此网卡需要在网卡芯片官网下载最新驱动安装(不要用windows自带的驱动), 然后在硬件属性中开启<code>数据包优先级和VLAN</code>, 以允许带vlan tag的包通过此网卡，以支持vlan透传。</p>
+<pre><code class="language-ps"># 以太网是你要使用的物理网卡的名字
+New-VMSwitch &quot;OVS-Extended-Switch&quot; -NetAdapterName &quot;phy_netcard&quot;
+Enable-VMSwitchExtension &quot;Open vSwitch Extension&quot; OVS-Extended-Switch
+</code></pre>
+<h1 id="安装ovs本体">安装ovs本体</h1>
+<p>双击 D:\installer\installer\OpenvSwitch.msi 执行即可</p>
+<h1 id="测试ovs">测试ovs</h1>
+<pre><code>ovs-vsctl add-br br01 # 创建虚拟交换机br01
+ovs-vsctl add-port br01 pyh_netcard # 绑定物理网卡pyh_netcard为虚拟交换机br01的端口
+ovs-vsctl add-port br01 vir_interface -- set interface vir_interface type=internal # 在虚拟交换机br01上创建一个虚拟端口vir_interface，在宿主操作系统中创建一块虚拟网卡vir_interface，并把这个端口和网卡连接起来
+ovs-vsctl set port vir_interface tag=10 # 设置端口为access模式，并设置tag
+ovs-vsctl set port phy_netcard trunks=[10,20] 3 # 设置端口为trunk模式，并设置tag
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[使用C获取任意长度连续数据在内存中的原始二进制值]]></title>
+        <id>https://xx2211.github.io/post/shi-yong-c-huo-qu-ren-yi-chang-du-lian-xu-shu-ju-zai-nei-cun-zhong-de-yuan-shi-er-jin-zhi-zhi/</id>
+        <link href="https://xx2211.github.io/post/shi-yong-c-huo-qu-ren-yi-chang-du-lian-xu-shu-ju-zai-nei-cun-zhong-de-yuan-shi-er-jin-zhi-zhi/">
+        </link>
+        <updated>2019-09-29T10:43:30.000Z</updated>
+        <content type="html"><![CDATA[<p>如下:</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+//参数1：数据首地址
+//参数2：数据大小(字节数)
+//返回值: 空
+//输出: 内存数据
+void funPrintBit(void * pFirstAddress, int iByteNum)   //此函数仅使用于小端机器，即低位在前，高位在后
+{	
+	unsigned char *p = (unsigned char *)pFirstAddress; //对小端来讲，逻辑左移即物理右移
+	unsigned char c;								   //对小端来讲，逻辑右移即物理左移
+	for (int i = 0; i &lt; iByteNum; i++)
+	{
+		c = 1;
+		for (int j = 0; j &lt; 8; j++)
+		{
+			printf(&quot;%d&quot;, (p[i]&amp;c) &gt;&gt; j);
+			c = c &lt;&lt; 1;
+		}
+		printf(&quot; &quot;);
+	}
+	printf(&quot;\n&quot;);
+}
+
+int main(){
+    funPrintBit(&amp;main, 10);
+}
+
+
+</code></pre>
+]]></content>
+    </entry>
+</feed>

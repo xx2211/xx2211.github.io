@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    
+<meta charset="utf-8" >
+
+<title>VMWare中虚拟机挂载设备时常见问题及解决方案 | enbug</title>
+<meta name="description" content="nothing">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://xx2211.github.io/favicon.ico?v=1692622271378">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://xx2211.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://xx2211.github.io">
+        <img class="avatar" src="https://xx2211.github.io/images/avatar.png?v=1692622271378" alt="" width="32px" height="32px">
+      </a>
+      <a href="https://xx2211.github.io">
+        <h1 class="site-title">enbug</h1>
+      </a>
+    </div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
+  </div>
+</div>
+
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
+      
+        
+          <a href="/" class="menu purple-link">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="menu purple-link">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="menu purple-link">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+</transition>
+
+
+      <div class="content-container">
+        <div class="post-detail">
+          
+          <h2 class="post-title">VMWare中虚拟机挂载设备时常见问题及解决方案</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2023-06-25</span>
+            
+          </div>
+          <div class="post-content" v-pre>
+            <h3 id="问题01-连接与xx断开连接按钮为灰色">问题01   <code>连接(与xx断开连接)</code>按钮为灰色</h3>
+<p>解决方案：<br>
+先关闭虚拟机，然后打开虚拟机所在目录，打开 &lt;虚拟机名&gt;.vmx文件，找到<code>usb .restrictions.default Allow= &quot;FALSE&quot;</code>这一行，并把FALSE改为TRUE，然后重新打开虚拟机即可。</p>
+<p>切记要先关闭虚拟机，再修改文件。</p>
+<h3 id="问题02-连接了设备但是虚拟机中不显示">问题02 连接了设备但是虚拟机中不显示</h3>
+<p>解决方案：<br>
+在虚拟机硬件中添加usb设备，并且版本要与实际硬件的版本一致，保险起见，可以把每个版本(usb2.0、usb3.0等)的设备都创建一个添加到虚拟机。</p>
+
+          </div>
+        </div>
+
+        
+          <div class="next-post">
+            <a class="purple-link" href="https://xx2211.github.io/post/qt-zong-jie/">
+              <h3 class="post-title">
+                下一篇：Qt总结
+              </h3>
+            </a>
+          </div>
+          
+      </div>
+
+      
+
+      <div class="site-footer">
+  <div class="slogan">nothing</div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://xx2211.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+
+    </div>
+    <script type="application/javascript">
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

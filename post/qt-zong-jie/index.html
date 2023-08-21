@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    
+<meta charset="utf-8" >
+
+<title>Qt总结 | enbug</title>
+<meta name="description" content="nothing">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://xx2211.github.io/favicon.ico?v=1692622271378">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://xx2211.github.io/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://xx2211.github.io">
+        <img class="avatar" src="https://xx2211.github.io/images/avatar.png?v=1692622271378" alt="" width="32px" height="32px">
+      </a>
+      <a href="https://xx2211.github.io">
+        <h1 class="site-title">enbug</h1>
+      </a>
+    </div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
+  </div>
+</div>
+
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
+      
+        
+          <a href="/" class="menu purple-link">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="menu purple-link">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="menu purple-link">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+</transition>
+
+
+      <div class="content-container">
+        <div class="post-detail">
+          
+          <h2 class="post-title">Qt总结</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2022-07-22</span>
+            
+          </div>
+          <div class="post-content" v-pre>
+            <h4 id="安装器维护器">安装器&amp;维护器</h4>
+<ul>
+<li>
+<p>在线安装器</p>
+<ul>
+<li>
+<p>在qt官网下载</p>
+</li>
+<li>
+<p>选择组件，注意选择qt的版本和编译器的版本，以及ide(qt creator)。</p>
+</li>
+<li>
+<p>lts版本较稳定。社区版的lts版本有6.2.4，5.15.2</p>
+</li>
+</ul>
+</li>
+<li>
+<p>维护器</p>
+<ul>
+<li>
+<p>位置在qt的安装目录</p>
+</li>
+<li>
+<p>用来增删改组件</p>
+</li>
+</ul>
+</li>
+<li>
+<p>附注: 使用国内镜像源加速</p>
+<ul>
+<li>用命令行启动在线安装器或维护工具，并加上命令行参数--mirror https://mirror.nju.edu.cn/qt</li>
+</ul>
+</li>
+</ul>
+<h4 id="示例教程">示例&amp;教程</h4>
+<ul>
+<li>在qt creator的欢迎界面</li>
+</ul>
+<h4 id="构建系统">构建系统</h4>
+<ul>
+<li>qmake/cmake</li>
+<li>要使用某个模块，要先在cmake/qmake中添加</li>
+<li>把 头文件/源文件/资源文件/界面文件 添加到项目中</li>
+</ul>
+<h4 id="编译套件">编译套件</h4>
+<ul>
+<li>mingw：移植的gcc，可以用于windows桌面开发</li>
+<li>其他：桌面、嵌入式、移动端等等，应该暂时用不到</li>
+</ul>
+<h4 id="qt命令行环境">Qt命令行环境</h4>
+<ul>
+<li>
+<p>功能：打包、测试、预览图形界面等</p>
+</li>
+<li>
+<p>位置：开始菜单-&gt;所有应用-&gt;Qt-&gt; Qt x.x.xx(xx.xx.xx)</p>
+</li>
+</ul>
+<h4 id="半自动的内存管理">半自动的内存管理</h4>
+<ul>
+<li>
+<p>继承自QObject/QWidget的对象。可以设置父对象。所有对象可以组成一个或若干个对象树。根对象被回收时它的子孙对象会自动被回收。</p>
+</li>
+<li>
+<p>附：c++的其他内存管理方式：raii等。</p>
+</li>
+</ul>
+<h4 id="信号槽机制">信号槽机制</h4>
+<ul>
+<li>
+<p>观察者模式</p>
+</li>
+<li>
+<p>是QObject的子孙且包含Q_OBJECT宏的类，可以声明信号或槽</p>
+</li>
+<li>
+<p>信号：用singls宏声明，只用声明不用实现</p>
+</li>
+<li>
+<p>槽：用slots宏声明，需要实现</p>
+</li>
+<li>
+<p>示例伪代码</p>
+</li>
+</ul>
+<pre><code class="language-c++">
+  //对象1发出信号1时，对象2的信号2/槽2会被触发
+  QObject::connect( 对象1, 信号1, 对象2, 信号2/槽2 )
+​	
+  //对象1发出信号1时，lambda表达式会被触发
+  QObject::connect( 对象1, 信号1,  lambda表达式 )
+    
+  //手动发射信号
+  emit 对象.信号名()
+</code></pre>
+<h4 id="gui图形界面开发">GUI图形界面开发</h4>
+<ul>
+<li>
+<p>界面开发方式</p>
+<ul>
+<li>
+<p>widgets-based</p>
+<ul>
+<li>直接new控件</li>
+<li>ui文件</li>
+</ul>
+</li>
+<li>
+<p>qt quick</p>
+<ul>
+<li>
+<p>程序执行时用js引擎解析qml文件，边执行边解析渲染</p>
+</li>
+<li>
+<p>图片要先加到 cmake</p>
+</li>
+<li>
+<p>事件处理</p>
+<ul>
+<li>connect、on信号名首字母大写</li>
+</ul>
+</li>
+<li>
+<p>组件</p>
+<ul>
+<li>
+<p>参考书籍：qt quick 核心编程 第7章</p>
+</li>
+<li>
+<p>qml 组件参考： https://blog.csdn.net/kenfan1647/article/details/120546294</p>
+</li>
+<li>
+<p>qml 自定义控件参考 https://blog.csdn.net/u013718730/article/details/104160498</p>
+</li>
+<li>
+<p>qml 自定义类型参考： https://blog.csdn.net/beibeix2015/article/details/111991060</p>
+</li>
+</ul>
+</li>
+<li>
+<p>qml与c++交互</p>
+<ul>
+<li>此文写的很细致适合入门：https://blog.csdn.net/xiezhongyuan07/article/details/109245920</li>
+<li>此文总结的很全面：https://blog.csdn.net/xiezhongyuan07/article/details/109318209</li>
+<li>这是demo：https://gitee.com/xx2211/projects</li>
+<li>这是进阶demo
+<ul>
+<li>cpp中使用qml https://blog.csdn.net/bureau123/article/details/124454536</li>
+<li>qml中使用cpp https://blog.csdn.net/bureau123/article/details/124378214</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>窗口坐标系</p>
+<ul>
+<li>左上为原点，向右为x正方向，向下为y正方向</li>
+</ul>
+</li>
+<li>
+<p>view &amp; model</p>
+<ul>
+<li>view显示数据的容器 model存储数据 delegate定义显示方式</li>
+</ul>
+</li>
+<li>
+<p>自定义控件(widget)</p>
+<ul>
+<li>继承Qt控件，修改外观、布局、添加子控件等。</li>
+<li>ui设计器中使用自定义控件，先使用基本控件，再“提升为”自定义控件</li>
+</ul>
+</li>
+<li>
+<p>dpi, pointSize, pixeSize</p>
+<ul>
+<li>pointSize自适应，pixelSize像素单位</li>
+</ul>
+</li>
+</ul>
+<h4 id="打包">打包</h4>
+<ul>
+<li>windeployqt命令，有时需要手动替换依赖</li>
+<li>打包成一个文件：enigma virtual box工具</li>
+<li>验证打包是否成功：在sandbox中尝试运行</li>
+</ul>
+<h4 id="帮助文档">帮助文档</h4>
+<ul>
+<li>本地帮助文档：工具栏-&gt;帮助-&gt;索引</li>
+<li>官方在线文档 https://doc.qt.io/   https://doc.qt.io/all-topics.html</li>
+<li>第三方博客 qml https://blog.csdn.net/bureau123/category_11712436.html</li>
+<li>第三方博客 qt https://blog.csdn.net/bureau123/category_10691949.html</li>
+</ul>
+
+          </div>
+        </div>
+
+        
+          <div class="next-post">
+            <a class="purple-link" href="https://xx2211.github.io/post/windows-gou-jian-an-zhuang-shi-yong-ovsopen-vswitch/">
+              <h3 class="post-title">
+                下一篇：Windows构建 安装 使用ovs(Open vSwitch)
+              </h3>
+            </a>
+          </div>
+          
+      </div>
+
+      
+
+      <div class="site-footer">
+  <div class="slogan">nothing</div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://xx2211.github.io/atom.xml" target="_blank">RSS</a>
+</div>
+
+
+    </div>
+    <script type="application/javascript">
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>
